@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html ng-app="listaSabores">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	
+	<title>Teste | Acácio</title>
+	<link rel="stylesheet" type="text/css" href="lib/bootstrap/bootstrap.css">
+	<style>
+		.jumbotron {
+			width: 800px;
+			text-align: center;
+			margin-top: 20px;
+			margin-left: auto;
+			margin-right: auto;
+		}
+		.table {
+			margin-top: 20px;
+		}
+		.form-control {
+			margin-bottom: 5px;
+		}
+	</style>
+	<script src="lib/angular/app.js"></script>
+	<script src="lib/angular/angular.js"></script>
+	<script src="lib/angular/angular-locale_pt-br.js"></script>
+	<script>
+		angular.module("listaSabores", []);
+		angular.module("listaSabores").controller("listaSaboresCtrl", function ($scope) {
+			$scope.app = "Sabores";
+			$scope.contatos = [
+				{nome: "Calabresa", ingrediente: "Queijo mussarela, calabresa e cebola"},
+				{nome: "Lombo canadense com abacaxi", ingrediente: "Queijo mussarela, lombo canadense e abacaxi"},
+				{nome: "Portuguesa", ingrediente: "Queijo mussarela, calabresa, cebola, pimentão e ovo"},
+				{nome: "Palmito", ingrediente: "Queijo mussarela e palmito"},
+				{nome: "Banana", ingrediente: "Queijo mussarela, banana, canela e açúcar"},
+				{nome: "Milho", ingrediente: "Queijo mussarela e milho"},
+				{nome: "Atum", ingrediente: "Queijo mussarela e atum "},
+				{nome: "Pepperoni", ingrediente: "Queijo mussarela e pepperoni"},
+				{nome: "Presunto", ingrediente: "Queijo mussarela e presunto"}
+				
+				
+			];
+			
+			$scope.recheios = [
+				{nome: "Queijo mussarela", codigo: 5.00,},
+				{nome: "Queijo cheddar", codigo: 7.00,},
+				{nome: "Calabresa", codigo:5.00,},
+				{nome: "Pepperoni", codigo: 7.00,},
+				{nome: "Atum", codigo: 6.00,},
+				{nome: "Banana", codigo: 2.00,},
+				{nome: "Calda de Chocolate", codigo: 4.00,},
+				{nome: "Milho", codigo: 2.00,},
+				{nome: "Ervilha", codigo: 2.50,},
+				{nome: "Palmito", codigo: 5.00,},
+				{nome: "Presunto", codigo: 3.00,},
+				{nome: "Cebola", codigo: 1.00,},
+				{nome: "Pimentão", codigo: 1.50,},
+				{nome: "Ovo", codigo: 1.50,},
+				{nome: "Lombo canadense", codigo: 8.50,},
+				{nome: "Abacaxi", codigo: 2.50,},
+				{nome: "Canela", codigo: 0.50,},
+				{nome: "Açúcar", codigo: 0.50,}
+				];
+			
+			$scope.tamanhos = [
+				{nome: "Pequena", codigo: 1.00,},
+				{nome: "Média", codigo: 1.20,},
+				{nome: "Grande", codigo: 1.50,}
+				];
+			
+			$scope.bordas = [
+				{nome: "Catupiri", codigo: 5.00,},
+				{nome: "Cheddar", codigo: 7.00,},
+				{nome: "Chocolate", codigo: 6.00,}
+				];
+			
+			$scope.adicionarRecheios = function (recheios) {
+				$scope.recheio.push(angular.copy(recheio));
+				delete $scope.recheio;
+			};
+			
+			$scope.adicionarContato = function (contato) {
+				$scope.contatos.push(angular.copy(contato));
+				delete $scope.contato;
+			};
+			$scope.apagarContatos = function (contatos) {
+				$scope.contatos = contatos.filter(function (contato) {
+					if (!contato.selecionado) return contato;
+				});
+			};
+			$scope.isContatoRecheio = function (recheios) {
+				return recheios.some(function (recheio) {
+					return recheio.selecionado;
+				});
+			};
+			
+
+		});
+	</script>
+</head>
+<body>
+	<div  ng-controller="listaSaboresCtrl" class="container">
+	<div class="row">
+	
+	<div class="jumbotron">
+		<h3>{{app}}</h3>
+		<table class="table table-striped">
+			<tr>
+				<th>Nome</th>
+				<th>Ingredientes</th>
+			</tr>
+			<tr ng-repeat="contato in contatos | orderBy:'nome'">
+				<td>{{contato.nome}}</td>
+				<td>{{contato.ingrediente}}</td>
+			</tr>
+		</table>
+		<hr/>
+		
+	</div>
+	
+	</div>
+	</div>
+	
+	
+	
+	<div class="container">
+	<div class="row">
+	<div class="col-md-12">
+			<p>&nbsp;</p>
+		</div>
+	<div class="col-md-12">
+			<h3>Lista de Ingredientes</h3>
+			<p>&nbsp;</p>
+		</div>
+
+		<div class="col-md-4" ng-controller="listaSaboresCtrl">
+		<select class="form-control btn-primary btn-select-light" ng-model="contato.tamanho" ng-options="tamanho.nome + '..................('+ (tamanho.codigo | currency) +')' for tamanho in tamanhos | orderBy:'nome'">
+			<option value="">Selecione o tamanho</option>
+		</select>
+		<button class="btn btn-primary" ng-click="adicionarContato(contato)" >Adicionar</button>
+		
+		</div>
+		
+		<div class="col-md-4" ng-controller="listaSaboresCtrl">
+		<select class="form-control btn-success" ng-model="contato.recheio" ng-options="recheio.nome + '....................................('+ (recheio.codigo | currency) +')' for recheio in recheios | orderBy:'nome'">
+			<option value="">Selecione os ingredientes</option>
+		</select>
+		<button class="btn btn-primary" ng-click="adicionarContato(contato)" >Adicionar</button>
+		
+		</div>
+		
+		<div class="col-md-4" ng-controller="listaSaboresCtrl">
+		<select class="form-control btn btn-danger btn-select btn-select-light" ng-model="contato.borda" ng-options="borda.nome + '............('+ (borda.codigo | currency) +')' for borda in bordas | orderBy:'nome'">
+			<option value="">Selecione a borda</option>
+		</select>
+		<button class="btn btn-primary" ng-click="adicionarContato(contato)" >Adicionar</button>
+		
+			
+		</div>
+
+	</div>
+
+</div>
+
+<div class="container" ng-controller="listaSaboresCtrl">
+	<div class="row">
+	<div class="col-md-12">
+			<p>&nbsp;</p>
+			<p>&nbsp;</p>
+			<p>&nbsp;</p>
+			<p>&nbsp;</p>
+			<h3>Itens selecionados</h3>
+			
+		</div>
+		<div class="col-md-5">
+		
+		<table ng-show="contatos.length > 0" class="table">
+			<tr>
+				<th></th>
+				<th>Item</th>
+				
+				<th>Valor</th>
+				<th></th>
+			</tr>
+			<tr ng-class="{'selecionado negrito': recheio.selecionado}" ng-repeat="recheio in recheios">
+				<td><input type="checkbox" ng-model="recheio.selecionado"/></td>
+				<td>{{recheio.nome}}</td>
+				<td>{{recheio.codigo | currency}}</td>
+				
+				<td><div style="width: 20px; height: 20px;" ng-style="{'background-color': contato.cor}"></div></td>
+			</tr>
+		</table>
+		<button class="btn btn-danger " ng-click="apagarContatos(contatos)" >Excluir item</button>
+		</div>
+		<div class="col-md-3">
+
+		</div>
+		<div class="col-md-2">
+		 <input type="text" class="form-control mb-2 mr-sm-2 mb-sm-0" id="vlProduto" placeholder="Valor (R$)" style="width:148px">
+		
+			
+		</div>
+		<div class="col-md-2" ng-controller="listaSaboresCtrl">
+		<form action="lib/angular/app.js">
+		<button  class="btn btn-primary btn-block" ng-required="true" ng-click="">Finalizar Pedido</button>
+		</form>
+		
+		
+		</div>
+		<div class="col-md-12">
+			<p>&nbsp;</p>
+			<p>&nbsp;</p>
+			<p>&nbsp;</p>
+			<p>&nbsp;</p>
+			
+			
+		</div>
+	</div>
+</div>
+
+
+	
+
+	
+	
+	
+	
+	
+	
+</body>
+</html>
+
